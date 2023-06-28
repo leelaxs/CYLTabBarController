@@ -9,11 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "UIView+CYLTabBarControllerExtention.h"
 #import "CYLPlusButton.h"
-#if __has_include(<Lottie/Lottie.h>)
-#import <Lottie/Lottie.h>
-#else
-#endif
-
+#import <CYLTabBarController/CYLTabBarController-Swift.h>
 @implementation UIView (CYLTabBarControllerExtention)
 
 - (BOOL)cyl_isPlusButton {
@@ -176,7 +172,7 @@
     if (!isKind) {
         return NO;
     }
-    Class classType = NSClassFromString(@"LOTAnimationView");
+    Class classType = [CYLLOTAnimationView class];
     BOOL isLottieAnimationView = ([self isKindOfClass:classType] || [self isMemberOfClass:classType]);
     return isLottieAnimationView;
 }

@@ -7,12 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
 NS_ASSUME_NONNULL_BEGIN
-@class LOTAnimationView;
+@class CYLLOTAnimationView;
 @interface UIControl (CYLTabBarControllerExtention)
 
-- (LOTAnimationView *)cyl_lottieAnimationView;
+- (CYLLOTAnimationView *)cyl_lottieAnimationView;
 - (BOOL)cyl_isChildViewControllerPlusButton;
 
 /*!

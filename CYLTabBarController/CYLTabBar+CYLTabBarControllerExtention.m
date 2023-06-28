@@ -11,12 +11,9 @@
 #import "UIControl+CYLTabBarControllerExtention.h"
 #import "CYLTabBarController.h"
 #import <objc/runtime.h>
-
+#import <CYLTabBarController/CYLTabBarController-Swift.h>
 #import "CYLTabBar.h"
-#if __has_include(<Lottie/Lottie.h>)
-#import <Lottie/Lottie.h>
-#else
-#endif
+
 
 @implementation CYLTabBar (CYLTabBarControllerExtention)
 
@@ -161,20 +158,20 @@
                                           lottieURL:(NSURL *)lottieURL
                                                size:(CGSize)size
                                     defaultSelected:(BOOL)defaultSelected {
-#if __has_include(<Lottie/Lottie.h>)
+#if __has_include(<Lottie/Lottie-Swift.h>)
     [selectedControl cyl_addLottieImageWithLottieURL:lottieURL size:size];
     [self cyl_stopAnimationOfAllLottieView];
-    LOTAnimationView *lottieView = selectedControl.cyl_lottieAnimationView;
+    CYLLOTAnimationView *lottieView = (CYLLOTAnimationView *)selectedControl.cyl_lottieAnimationView;
     if (!lottieView) {
         [selectedControl cyl_addLottieImageWithLottieURL:lottieURL size:size];
     }
-    if (lottieView && [lottieView isKindOfClass:[LOTAnimationView class]]) {
+    if (lottieView && [lottieView isKindOfClass:[CYLLOTAnimationView class]]) {
         if (defaultSelected) {
-            lottieView.animationProgress = 1;
+            [lottieView animationProgress:1];
             [lottieView forceDrawingUpdate];
             return;
         }
-        lottieView.animationProgress = 0;
+        [lottieView animationProgress:0];
         [lottieView play];
     }
 #else
@@ -182,7 +179,7 @@
 }
 
 - (void)cyl_stopAnimationOfAllLottieView {
-#if __has_include(<Lottie/Lottie.h>)
+#if __has_include(<Lottie/Lottie-Swift.h>)
     [self.cyl_visibleControls enumerateObjectsUsingBlock:^(UIControl * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [obj.cyl_lottieAnimationView stop];
     }];

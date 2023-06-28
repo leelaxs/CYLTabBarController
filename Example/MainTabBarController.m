@@ -420,7 +420,7 @@ static CGFloat const CYLTabBarControllerHeight = 40.f;
         animationView = button.imageView;
     }
     
-    [self addScaleAnimationOnView:animationView repeatCount:1];
+//    [self addScaleAnimationOnView:animationView repeatCount:1];
     // [self addRotateAnimationOnView:animationView];//暂时不推荐用旋转方式，badge也会旋转。
     
     //添加仿淘宝tabbar，第一个tab选中后有图标覆盖

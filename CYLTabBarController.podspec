@@ -7,21 +7,22 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "ChenYilong" => "luohanchenyilong@163.com" }
   s.social_media_url = 'http://weibo.com/luohanchenyilong/'
-  s.platform     = :ios, '8.0'
+  s.platform     = :ios, '11.0'
   s.source       = { :git => "https://github.com/ChenYilong/CYLTabBarController.git", :tag => s.version.to_s }
  
   s.requires_arc = true
+  s.swift_version = '5.0'
 
   s.default_subspec = 'Core'
 
   s.subspec 'Core' do |core|
-  core.source_files  = 'CYLTabBarController', 'CYLTabBarController/**/*.{h,m}'
+  core.source_files  = 'CYLTabBarController', 'CYLTabBarController/**/*.{h,m, swift}'
   core.public_header_files = 'CYLTabBarController/**/*.h'
   end
 
   s.subspec 'Lottie' do |lottie|
     lottie.dependency 'CYLTabBarController/Core'
-    lottie.dependency "lottie-ios" , '~> 2.5.3'
+    lottie.dependency 'lottie-ios' , '3.4.1'
   end
 end
  

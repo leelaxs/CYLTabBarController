@@ -155,15 +155,15 @@
     return selectedControl;
 }
 - (void)cyl_animationLottieImageWithSelectedControl:(UIControl *)selectedControl
-                                          lottieURL:(NSURL *)lottieURL
+                                     lottieFilePath:(NSString *)lottieFilePath
                                                size:(CGSize)size
                                     defaultSelected:(BOOL)defaultSelected {
 #if __has_include(<Lottie/Lottie-Swift.h>)
-    [selectedControl cyl_addLottieImageWithLottieURL:lottieURL size:size];
+    [selectedControl cyl_addLottieImageWithLottieFilePath:lottieFilePath size:size];
     [self cyl_stopAnimationOfAllLottieView];
     CYLLOTAnimationView *lottieView = (CYLLOTAnimationView *)selectedControl.cyl_lottieAnimationView;
     if (!lottieView) {
-        [selectedControl cyl_addLottieImageWithLottieURL:lottieURL size:size];
+        [selectedControl cyl_addLottieImageWithLottieFilePath:lottieFilePath size:size];
     }
     if (lottieView && [lottieView isKindOfClass:[CYLLOTAnimationView class]]) {
         if (defaultSelected) {

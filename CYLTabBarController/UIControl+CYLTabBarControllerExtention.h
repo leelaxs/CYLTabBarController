@@ -36,8 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, getter=cyl_shouldNotSelect, setter=cyl_setShouldNotSelect:) BOOL cyl_shouldNotSelect;
 
-- (void)cyl_addLottieImageWithLottieURL:(NSURL *)lottieURL
-                                   size:(CGSize)size;
+- (void)cyl_addLottieImageWithLottieFilePath:(NSString *)lottieFilePath
+                                        size:(CGSize)size;
 
 - (void)cyl_replaceTabImageViewWithNewView:(UIView *)newView
                              show:(BOOL)show;

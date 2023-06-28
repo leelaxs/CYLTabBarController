@@ -11,7 +11,7 @@ import Lottie
 @objcMembers
 open class CYLLOTAnimationView: UIView {
     
-    var aniUrl: URL?
+    var aniFilePath: String?
     var aniView: AnimationView?
     
     open override func layoutSubviews() {
@@ -19,13 +19,11 @@ open class CYLLOTAnimationView: UIView {
         aniView?.frame = self.bounds
     }
     
-    @objc public init(aniUrl: URL? = nil) {
+    @objc public init(filePath: String? = nil) {
         super.init(frame: .zero)
-        self.aniUrl = aniUrl
-        if let aUrl = aniUrl {
-            aniView = AnimationView(url:aUrl) { (error) in
-                print("\(String(describing: error))")
-            }
+        self.aniFilePath = filePath
+        if let aFilePath = filePath {
+            aniView = AnimationView(filePath: aFilePath)
             aniView!.isUserInteractionEnabled = false
             aniView!.contentMode = .scaleToFill
             aniView!.clipsToBounds = false
@@ -38,7 +36,7 @@ open class CYLLOTAnimationView: UIView {
     }
     
     @objc public func animationProgress(_ progress: CGFloat){
-        let _  = aniView?.animation?.frameTime(forProgress: progress)
+        aniView?.currentProgress = progress
     }
     
     @objc public func forceDrawingUpdate() {

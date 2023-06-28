@@ -284,15 +284,15 @@
     }
 }
 
-- (void)cyl_addLottieImageWithLottieURL:(NSURL *)lottieURL
-                                   size:(CGSize)size {
+- (void)cyl_addLottieImageWithLottieFilePath:(NSString *)lottieFilePath
+                                        size:(CGSize)size {
         
 #if __has_include(<Lottie/Lottie-Swift.h>)
     if (self.cyl_lottieAnimationView) {
         return;
     }
     UIControl *tabButton = self;
-    CYLLOTAnimationView *lottieView = [[CYLLOTAnimationView alloc] initWithAniUrl:lottieURL];
+    CYLLOTAnimationView *lottieView = [[CYLLOTAnimationView alloc] initWithFilePath:lottieFilePath];
     lottieView.frame = CGRectMake(0, 0, size.width, size.height);
     [lottieView setClipsToBounds:NO];
     lottieView.userInteractionEnabled = NO;

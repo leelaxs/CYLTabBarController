@@ -18,7 +18,7 @@ NSString *const CYLTabBarItemImage = @"CYLTabBarItemImage";
 NSString *const CYLTabBarItemSelectedImage = @"CYLTabBarItemSelectedImage";
 NSString *const CYLTabBarItemImageInsets = @"CYLTabBarItemImageInsets";
 NSString *const CYLTabBarItemTitlePositionAdjustment = @"CYLTabBarItemTitlePositionAdjustment";
-NSString *const CYLTabBarLottieURL = @"CYLTabBarLottieURL";
+NSString *const CYLTabBarLottieFilePath = @"CYLTabBarLottieFilePath";
 NSString *const CYLTabBarLottieSize = @"CYLTabBarLottieSize";
 
 NSUInteger CYLTabbarItemsCount = 0;
@@ -33,7 +33,7 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
 
 @property (nonatomic, assign, getter=isObservingTabImageViewDefaultOffset) BOOL observingTabImageViewDefaultOffset;
 @property (nonatomic, assign, getter=shouldInvokeOnceViewDidLayoutSubViewsBlock) BOOL invokeOnceViewDidLayoutSubViewsBlock;
-@property (nonatomic, strong) NSMutableArray<NSURL *> *lottieURLs;
+@property (nonatomic, strong) NSMutableArray<NSString *> *lottieFilePaths;
 @property (nonatomic, strong) NSMutableArray *lottieSizes;
 @property (nonatomic, assign, getter=isLottieViewAdded) BOOL lottieViewAdded;
 @property (nonatomic, strong) UIImage *tabItemPlaceholderImage;
@@ -105,7 +105,7 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
         //FIXME:
         NSArray *subTabBarButtonsWithoutPlusButton = tabBar.cyl_subTabBarButtonsWithoutPlusButton;
         BOOL isLottieEnabled = [self isLottieEnabled];
-        if(!isLottieEnabled || (subTabBarButtonsWithoutPlusButton.count != self.lottieURLs.count)) {
+        if(!isLottieEnabled || (subTabBarButtonsWithoutPlusButton.count != self.lottieFilePaths.count)) {
             self.lottieViewAdded = YES;
             break;
         }
@@ -384,7 +384,7 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
             id selectedImageInfo = nil;
             UIOffset titlePositionAdjustment = UIOffsetZero;
             UIEdgeInsets imageInsets = UIEdgeInsetsZero;
-            NSURL *lottieURL = nil;
+            NSString *lottieFilePath = nil;
             NSValue *lottieSizeValue = nil;
             if (viewController != CYLPlusChildViewController) {
                 if (@available(iOS 13.0, *)) {
@@ -396,7 +396,7 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
 
                 normalImageInfo = _tabBarItemsAttributes[idx][CYLTabBarItemImage];
                 selectedImageInfo = _tabBarItemsAttributes[idx][CYLTabBarItemSelectedImage];
-                lottieURL = _tabBarItemsAttributes[idx][CYLTabBarLottieURL];
+                lottieFilePath = _tabBarItemsAttributes[idx][CYLTabBarLottieFilePath];
                 lottieSizeValue = _tabBarItemsAttributes[idx][CYLTabBarLottieSize];
 
                 NSValue *offsetValue = _tabBarItemsAttributes[idx][CYLTabBarItemTitlePositionAdjustment];
@@ -421,7 +421,7 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
                           selectedImageInfo:selectedImageInfo
                     titlePositionAdjustment:titlePositionAdjustment
                                 imageInsets:imageInsets
-                                  lottieURL:lottieURL
+                             lottieFilePath:lottieFilePath
                             lottieSizeValue:lottieSizeValue
              
              ];
@@ -475,7 +475,7 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
                 selectedImageInfo:(id)selectedImageInfo
           titlePositionAdjustment:(UIOffset)titlePositionAdjustment
                       imageInsets:(UIEdgeInsets)imageInsets
-                        lottieURL:(NSURL *)lottieURL
+                   lottieFilePath:(NSString *)lottieFilePath
                   lottieSizeValue:(NSValue *)lottieSizeValue {
     viewController.tabBarItem.title = title;
     UIImage *normalImage = nil;
@@ -502,8 +502,8 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
         UIOffset offset = (([self isNOTEmptyForTitlePositionAdjustment:titlePositionAdjustment]) ? titlePositionAdjustment : self.titlePositionAdjustment);
         viewController.tabBarItem.titlePositionAdjustment = offset;
     }
-    if (lottieURL) {
-        [self.lottieURLs addObject:lottieURL];
+    if (lottieFilePath && ([lottieFilePath isKindOfClass:NSString.class] && lottieFilePath.length > 0)) {
+        [self.lottieFilePaths addObject:lottieFilePath];
         NSValue *tureLottieSizeValue = nil;
         do {
             if (!CGSizeEqualToSize(CGSizeZero, [lottieSizeValue CGSizeValue])) {
@@ -635,7 +635,7 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
 }
 
 - (BOOL)isLottieEnabled {
-    NSInteger lottieURLCount = self.lottieURLs.count;
+    NSInteger lottieURLCount = self.lottieFilePaths.count;
     BOOL isLottieEnabled = lottieURLCount > 0 ;
     return isLottieEnabled;
 }
@@ -684,12 +684,15 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
     if (control.cyl_isPlusButton) {
         return;
     }
-    NSURL *lottieURL = self.lottieURLs[index];
+    NSString *lottieFilePath = self.lottieFilePaths[index];
     NSValue *lottieSizeValue = self.lottieSizes[index];
     CGSize lottieSize = [lottieSizeValue CGSizeValue];
-    [control cyl_addLottieImageWithLottieURL:lottieURL size:lottieSize];
+    [control cyl_addLottieImageWithLottieFilePath:lottieFilePath size:lottieSize];
     if (animation) {
-        [self.tabBar cyl_animationLottieImageWithSelectedControl:control lottieURL:lottieURL size:lottieSize defaultSelected:defaultSelected];
+        [self.tabBar cyl_animationLottieImageWithSelectedControl:control
+                                                  lottieFilePath:lottieFilePath
+                                                            size:lottieSize
+                                                 defaultSelected:defaultSelected];
     }
 }
 
@@ -709,12 +712,12 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
  *
  *  @return NSMutableArray
  */
-- (NSMutableArray *)lottieURLs {
-    if (_lottieURLs == nil) {
-        NSMutableArray *lottieURLs = [[NSMutableArray alloc] init];
-        _lottieURLs = lottieURLs;
+- (NSMutableArray *)lottieFilePaths {
+    if (_lottieFilePaths == nil) {
+        NSMutableArray *lottieFilePaths = [[NSMutableArray alloc] init];
+        _lottieFilePaths = lottieFilePaths;
     }
-    return _lottieURLs;
+    return _lottieFilePaths;
 }
 
 /**

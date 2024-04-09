@@ -12,7 +12,7 @@ import Lottie
 open class CYLLOTAnimationView: UIView {
     
     var aniFilePath: String?
-    var aniView: AnimationView?
+    var aniView: LottieAnimationView?
     
     open override func layoutSubviews() {
         super.layoutSubviews()
@@ -23,7 +23,7 @@ open class CYLLOTAnimationView: UIView {
         super.init(frame: .zero)
         self.aniFilePath = filePath
         if let aFilePath = filePath {
-            aniView = AnimationView(filePath: aFilePath)
+            aniView = LottieAnimationView(filePath: aFilePath)
             aniView!.isUserInteractionEnabled = false
             aniView!.contentMode = .scaleToFill
             aniView!.clipsToBounds = false

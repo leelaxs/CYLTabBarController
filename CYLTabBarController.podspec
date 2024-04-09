@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "ChenYilong" => "luohanchenyilong@163.com" }
   s.social_media_url = 'http://weibo.com/luohanchenyilong/'
-  s.platform     = :ios, '11.0'
+  s.platform     = :ios, '13.0'
   s.source       = { :git => "https://github.com/ChenYilong/CYLTabBarController.git", :tag => s.version.to_s }
  
   s.requires_arc = true
@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Lottie' do |lottie|
     lottie.dependency 'CYLTabBarController/Core'
-    lottie.dependency 'lottie-ios' , '3.4.1'
+    lottie.dependency 'lottie-ios' , '4.4.2'
   end
 end
  

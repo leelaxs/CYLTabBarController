@@ -746,9 +746,11 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
 }
 
 
-static inline UIWindow *getMainWindow(){
+static inline UIWindow *getMainWindow(void){
    UIWindow *window = nil;
-    window = UIApplication.sharedApplication.delegate.window;
+    if ([UIApplication.sharedApplication.delegate respondsToSelector:@selector(setWindow:)]) {
+        window = UIApplication.sharedApplication.delegate.window;
+    }
     if (!window) {
         if (@available(iOS 13.0, *))
            {

@@ -747,23 +747,21 @@ static void * const CYLTabImageViewDefaultOffsetContext = (void*)&CYLTabImageVie
 
 
 static inline UIWindow *getMainWindow(void){
-   UIWindow *window = nil;
-    if ([UIApplication.sharedApplication.delegate respondsToSelector:@selector(setWindow:)]) {
-        window = UIApplication.sharedApplication.delegate.window;
-    }
+    UIWindow *window = nil;
     if (!window) {
-        if (@available(iOS 13.0, *))
-           {
-               for (UIWindowScene* wScene in [UIApplication sharedApplication].connectedScenes)
-               {
-                   if (wScene.activationState == UISceneActivationStateForegroundActive)
-                   {
-                       window = wScene.windows.firstObject;
-
-                       break;
-                   }
+        if (@available(iOS 13.0, *)){
+           for (UIWindowScene* wScene in [UIApplication sharedApplication].connectedScenes){
+               if (![wScene isMemberOfClass:[UIWindowScene class]]) continue;
+               if (wScene.activationState == UISceneActivationStateForegroundActive ||
+                   wScene.activationState == UISceneActivationStateForegroundInactive){
+                   window = wScene.windows.firstObject;
+                   break;
                }
            }
+        }
+    }
+    if (!window && [UIApplication.sharedApplication.delegate respondsToSelector:@selector(window)]) {
+        window = UIApplication.sharedApplication.delegate.window;
     }
     return window;
 }

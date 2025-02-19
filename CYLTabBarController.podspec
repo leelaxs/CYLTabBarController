@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Lottie' do |lottie|
     lottie.dependency 'CYLTabBarController/Core'
-    lottie.dependency 'lottie-ios' , '4.4.2'
+    lottie.dependency 'lottie-ios' , '4.5.1'
   end
 end
  
